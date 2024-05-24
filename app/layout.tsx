@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { deDE } from "@clerk/localizations";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,12 +22,13 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={deDE} >
       <html lang="en" suppressHydrationWarning>
-        <body className={cn("bg-secondary" ,inter.className)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+        <body className={cn("bg-secondary", inter.className)}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider >
   );
 }

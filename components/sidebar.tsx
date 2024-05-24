@@ -18,7 +18,7 @@ export const Sidebar = () => {
         },
         {
             icon: Plus,
-            href: "/ai-agent/new",
+            href: "/agent/new",
             label: "Create",
             pro: true,
         },

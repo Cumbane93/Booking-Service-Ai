@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -14,27 +14,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AgentCategory{
-  id               String @id @default(uuid())
-  name             String
-  agents           Agent[]
+model AgentCategory {
+  id     String  @id @default(uuid())
+  name   String
+  agents Agent[]
 }
 
 model Agent {
-  id               String @id @default(uuid())
-  userId           String
-  userName         String
-  src              String
-  name             String @db.Text
-  description      String
-  instructions     String @db.Text
-  seed             String @db.Text
+  id           String @id @default(uuid())
+  userId       String
+  userName     String
+  src          String
+  name         String @db.Text
+  description  String
+  instructions String @db.Text
+  seed         String @db.Text
 
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  agentCategory    AgentCategory @relation(fields: [agentCategoryId], references: [id])
-  agentCategoryId  String
+  agentCategory   AgentCategory @relation(fields: [agentCategoryId], references: [id])
+  agentCategoryId String
+
+  messages Message[]
 
   @@index([agentCategoryId])
-  }
+}
+
+enum Role {
+  user
+  system
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  role      Role
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  agentId String
+  userId  String
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+}
